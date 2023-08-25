@@ -1,0 +1,214 @@
+openapi: 3.0.2
+info:
+  version: "1.0"
+  title: Welcome to the Products API!
+  description: This API allows users to handle products
+  contact:
+    name: Cat Courture API
+    email: some_email@gmail.com
+servers:
+  - url: "http://localhost5001/api"
+    description: Development server
+  - url: "https://catcouturesam.herokuapp.com/api"
+    description: Production server
+paths:
+  /products:
+    get:
+      summary: Returns a list of products
+      description: Get a list of products
+      operationId: get-products
+      tags:
+        - products
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: The number of items to skip before starting to collect the result set
+          required: false
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 10
+          description: The numbers of items to return
+          required: false
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  products:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Product"
+                  currentPage:
+                    type: integer
+                  totalPages:
+                    type: integer
+                  itemsPerPage:
+                    type: integer
+                  totalItems:
+                    type: integer
+                required:
+                  - products
+                  - currentPage
+                  - totalPages
+                  - itemsPerPage
+                  - totalItems
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /reports:
+    get:
+      summary: Returns a list of reports
+      description: Get a list of reports
+      operationId: get-reports
+      security:
+        - bearerAuth: []
+      tags:
+        - reports
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  categoryReport:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/categoryReport"
+                  discountReport:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/discountReport"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorised"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Forbidden"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: string
+        categoryName:
+          type: string
+          nullable: true
+        imageName:
+          type: string
+          nullable: true
+        imageDescription:
+          type: string
+          nullable: true
+        discountValue:
+          type: number
+          nullable: true
+        discountType:
+          type: string
+          nullable: true
+      required:
+        - id
+        - name
+        - description
+        - price
+        - categoryName
+        - imageName
+        - imageDescription
+        - discountValue
+        - discountType
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+    Unauthorised:
+      title: Unauthorised
+      type: object
+      properties:
+        description:
+          type: string
+    Forbidden:
+      title: Forbidden
+      type: object
+      properties:
+        description:
+          type: string
+    categoryReport:
+      title: categoryReport
+      description: An object containing category data
+      type: object
+      properties:
+        categoryName:
+          type: string
+        totalProducts:
+          type: integer
+        discountedProducts:
+          type: integer
+      required:
+        - categoryName
+        - totalProducts
+        - discountedProducts
+    discountReport:
+      title: discountReport
+      type: object
+      properties:
+        discountType:
+          type: string
+          nullable: true
+        totalProducts:
+          type: integer
+      required:
+        - discountType
+        - totalProducts
+tags:
+  - name: products
+  - name: reports

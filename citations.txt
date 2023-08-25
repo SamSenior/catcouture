@@ -1,0 +1,13 @@
+1. The sections of code that incorporate the pagination was inspired by the class exercise and tutorial videos made by DI teacher Mark.
+The safePage and Safelimit checks on the router page could potentially be removed as we have error handling to catch errors before these checks occur but I thought
+it would be good to leave it in as it provides another layer of protection for the app and means if error handling were to become unoperational,
+the data could still be parsed and the app would still work.
+viewed/retrieved on 23/03/2022
+
+2. For implimenting the Auth0 I reffered to last years video tutorials made by DI instructor Lance and our class instructions
+viewed/retrieved on 25/03/2022 
+
+3. For implimenting the deployment I used the notes given to us in class as a guideline, found here https://docs.google.com/document/d/1ivAHZUF3ZKMff5adyLEOgNK2fykf7MEgPsOJYL4Ie3s/edit#
+I also used some of the tutorial videos made by DI instructor Lance as a guide.
+viewed/retrieved on 30/03/2022 
+
