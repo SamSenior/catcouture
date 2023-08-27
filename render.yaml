@@ -1,0 +1,19 @@
+# render.yaml
+
+services:
+  - name: server
+    buildCommand: cd server && npm install && npm run build
+    startCommand: npm run start
+    env:
+      - key: NODE_ENV
+        value: production
+
+routes:
+  - path: /api
+    service: server
+    internal: true
+
+volumes:
+  - name: db-volume
+
+# Additional Render-specific configurations if needed
