@@ -1,12 +1,36 @@
-# render.yaml
 
 services:
-  - name: server
-    buildCommand: cd server && npm install && npm run build
+  - name: client
+    buildCommand: cd client && npm install && npm run build
     startCommand: npm run start
     env:
-      - key: NODE_ENV
-        value: production
+      - key: REACT_APP_API_URL
+        value: https://catcouturesam.herokuapp.com/api
+      - key: REACT_APP_AUTH0_DOMAIN
+        value: dev-yatqye-0.us.auth0.com
+      - key: REACT_APP_AUTH0_CLIENT_ID
+        value: vj5JBZbhpFVAnyJakHcGMqkEs3iCoaUV
+      - key: REACT_APP_AUTH0_AUDIENCE
+        value: https://catcouture.com
+
+  - name: server
+    buildCommand: cd server && npm install && npm run build
+    startCommand: npm run start:dev
+    env:
+      - key: PGDATABASE
+        value: postgres
+      - key: PGHOST
+        value: db
+      - key: PGUSER
+        value: postgres
+      - key: PGPASSWORD
+        value: password
+      - key: PGPORT
+        value: "5432"
+      - key: AUTH0_AUDIENCE
+        value: https://catcouture.com
+      - key: AUTH0_ISSUER_BASE_URL
+        value: https://dev-yatqye-0.us.auth0.com
 
 routes:
   - path: /api
@@ -15,5 +39,3 @@ routes:
 
 volumes:
   - name: db-volume
-
-# Additional Render-specific configurations if needed
